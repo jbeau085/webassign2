@@ -1,95 +1,91 @@
 const dataUrl = "https://gist.githubusercontent.com/rconnolly/d37a491b50203d66d043c26f33dbd798/raw/37b5b68c527ddbe824eaed12073d266d5455432a/clothing-compact.json";
 let products = [];
 let cart = [];
-let filteredList={
+let filterList = {
     gender: [],
-    catagories: [],
+    categories: [],
     size: [],
     colors: []
 };
 
 // Get data from localStorage, if it doesn't exist, fetch it!
-function fetchData(){
+function fetchData(callback) {
   const productData = localStorage.getItem("productData");
-  if (productData){
+  if (productData) {
     products = JSON.parse(productData);
-    // console.dir(products);
+    if (callback) callback();
   } else {
     fetch(dataUrl)
-      .then(resp=>resp.json())
-      .then(data=>{
-        const jsonData = JSON.stringify(data);
-        localStorage.setItem("productData", jsonData);
+      .then(resp => resp.json())
+      .then(data => {
+        localStorage.setItem("productData", JSON.stringify(data));
         products = data;
-        // console.dir(products);
-    })
-    .catch(err=>console.log("Fetch Failed"));
+        if (callback) callback();
+      })
+      .catch(err => console.log("Fetch Failed", err));
   }
-};
+}
 
 // Generate the browse grid
-function generateGrid(products){
+function generateGrid(products) {
+  const filteredProducts = buildFilteredList(products, filterList);
   const template = document.querySelector("#productTemplate");
   const grid = document.querySelector("#productGrid");
   grid.replaceChildren();
-  for (p of products){
+
+  filteredProducts.forEach(p => {
     const newGrid = template.content.cloneNode(true);
     newGrid.querySelector(".title").textContent = p.name;
-    newGrid.querySelector(".price").textContent = p.price;
+    newGrid.querySelector(".price").textContent = "$" + p.price;
     grid.appendChild(newGrid);
-  }
-};
-
-// When you click on a filter, alter the filter array
-function filterMaker(e){
-  const pickGender = [...document.querySelectorAll(".filter.gender input[type='checkbox']:checked")];
-  filteredList.gender = pickGender.map(checkbox=>checkbox.value);
-  console.log(filteredList.gender);
-
+  });
 }
 
+// build the filtered list of products
+function buildFilteredList(products, filterList) {
+  return products.filter(product => {
+    if (filterList.gender.length > 0 &&
+        !filterList.gender.includes(product.gender.toLowerCase())) {
+      return false;
+    }
+    if (filterList.categories.length > 0 &&
+        !filterList.categories.includes(product.category.toLowerCase())) {
+      return false;
+    }
+    if (filterList.size.length > 0 &&
+        !product.sizes.some(s => filterList.size.includes(s))) {
+      return false;
+    }
+    if (filterList.colors.length > 0 &&
+        !product.color.some(c => filterList.colors.includes(c.name.toLowerCase()))) {
+      return false;
+    }
+    return true;
+  });
+}
+
+// When you click on a filter, alter the filter array
+function filterMaker(e) {
+  const pickGender = [...document.querySelectorAll(".filter.gender input[type='checkbox']:checked")];
+  filterList.gender = pickGender.map(cb => cb.value.toLowerCase());
+
+  const pickCategory = [...document.querySelectorAll(".filter.category input[type='checkbox']:checked")];
+  filterList.categories = pickCategory.map(cb => cb.value.toLowerCase());
+
+  const pickSize = [...document.querySelectorAll(".filter.size input[type='checkbox']:checked")];
+  filterList.size = pickSize.map(cb => cb.value);
+
+  const pickColor = [...document.querySelectorAll(".filter.color input[type='checkbox']:checked")];
+  filterList.colors = pickColor.map(cb => cb.value.toLowerCase());
+
+  generateGrid(products);
+}
 
 // LOAD THE DOM CONTENT HERE
 document.addEventListener("DOMContentLoaded", function() {
-  fetchData();
-  generateGrid(products);    
-  const leftBar = document.querySelector(".leftBar");
-  leftBar.addEventListener("change",filterMaker);
-    // Home
-    // Nav Link Handler
-    function navHandler(e){
-        if (e == "home"){
-            document.querySelector("#leftBar").style.display="none";
-            document.querySelector("#homeContent").style.display="block";
-        } else {
-            
-        }
-    }
-    
-    // Browse Functions
-    // Show list
-    //  Gender
-    // color
-    // Category
-    // Size
-    // Sort Order
-    // Size
-    // Add to Cart
-    // Click on Product
-    // Clear Filter Show everything
-
-    // Single Item View
-    // Add to Cart
-    // Quant change
-    // Color
-    // Size
-
-    // Shopping Cart Functions
-    // Remove Item
-    // Shipping Selector
-    // Shipping Method
-    // Checkout Button
-
-    
-
+  fetchData(() => {
+    generateGrid(products); // draw initial grid
+    const leftBar = document.querySelector(".leftBar");
+    leftBar.addEventListener("change", filterMaker);
+  });
 });

@@ -9,6 +9,19 @@
   <script src="./js/web2.js"></script>
 </head>
 <body>
+   <!-- PRODUCT TEMPLATE  -->
+          <template id="productTemplate">
+            <div class="box">
+              <div class="thumbnail"><img src="/mnt/data/e931c1a1-7553-49b7-814f-7dfdb85f3aa4.png" alt="placeholder image"></div>
+              <div class="info">
+                <div>
+                  <div class="title">Title</div>
+                  <div class="price">$price</div>
+                </div>
+                <div class="add">+</div>
+              </div>
+            </div>
+          </template>
   <!-- HEADER START -->
    <header>
                 <h1>Low Poly</h1>
@@ -35,36 +48,36 @@
       <div class="filter gender">
         <div class="title">Gender</div>
         <ul>
-          <li class="checkbox"><input type="checkbox" name="gender" value="female">Female</li>
-          <li class="checkbox"><input type="checkbox" name="gender" value="male">Male</li>
+          <li class="checkbox"><input type="checkbox" name="gender" value="womens">Female</li>
+          <li class="checkbox"><input type="checkbox" name="gender" value="mens">Male</li>
         </ul>
       </div>
 
       <div class="filter category">
         <div class="title">Category</div>
         <ul>
-          <li class="checkbox"><input type="checkbox">Bottoms</li>
-          <li class="checkbox"><input type="checkbox">Dresses</li>
-          <li class="checkbox"><input type="checkbox">Outwear</li>
-          <li class="checkbox"><input type="checkbox">Tops</li>
+          <li class="checkbox"><input type="checkbox" value="bottoms">Bottoms</li>
+          <li class="checkbox"><input type="checkbox" value="dresses">Dresses</li>
+          <li class="checkbox"><input type="checkbox" value="outerwear">Outwear</li>
+          <li class="checkbox"><input type="checkbox" value="tops">Tops</li>
         </ul>
       </div>
 
       <div class="filter size">
         <div class="title">Size</div>
         <ul>
-          <li class="checkbox"><input type="checkbox" >Small</li>
-          <li class="checkbox"><input type="checkbox" >Medium</li>
-          <li class="checkbox"><input type="checkbox">Large</li>
+          <li class="checkbox"><input type="checkbox" value="small">Small</li>
+          <li class="checkbox"><input type="checkbox" value="medium">Medium</li>
+          <li class="checkbox"><input type="checkbox" value="large">Large</li>
         </ul>
       </div>
 
       <div class="filter color">
         <div class="title">Colors</div>
         <ul>
-          <li class="checkbox"><span class="color-swatch" style="background:#f5e6c8"></span> Beige</li>
-          <li class="checkbox"><span class="color-swatch" style="background:#000"></span> Black</li>
-          <li class="checkbox"><span class="color-swatch" style="background:#2b3b4d"></span> Blue</li>
+          <li class="checkbox"><input type="checkbox" value="blue"><span class="color-swatch" style="background:#041ae2"></span> blue</li>
+          <li class="checkbox"><input type="checkbox" value="green"><span class="color-swatch" style="background:#0ad135"></span> green</li>
+          <li class="checkbox"><input type="checkbox" value="white"><span class="color-swatch" style="background:#ffffff"></span> white</li>
         </ul>
       </div>
       
@@ -85,19 +98,7 @@
           </div>
         </div>
         <div class="grid" id="productGrid">
-          <!-- PRODUCT TEMPLATE  -->
-          <template id="productTemplate">
-            <div class="box">
-              <div class="thumbnail"><img src="/mnt/data/e931c1a1-7553-49b7-814f-7dfdb85f3aa4.png" alt="placeholder image"></div>
-              <div class="info">
-                <div>
-                  <div class="title">Title</div>
-                  <div class="price">$price</div>
-                </div>
-                <div class="add">+</div>
-              </div>
-            </div>
-          </template>
+         
         </div>
       </article>
       <!-- BROWSE BOX END -->

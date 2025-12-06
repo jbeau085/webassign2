@@ -1,60 +1,141 @@
-<!DOCTYPE html>
-<html lang='en'>
-  <!--COMP 3512 Web 2 Assignment 2
-      James Beaudry
-      -->
-  <head>
-    <title> Low Poly </title>
-    <meta name = 'viewport content='width=device-width, initial-scale=1.0'>
-    <link rel='stylesheet' href='./css/styles.css'>
-    </head>
-  <body>
-    <main>
-      <header>
-        <h1>Low-Poly</h1>
-        <nav>
-          <ul id=navbar>
-            <li>
-              Home
-            </li>
-            <li>
-              Browse
-            </li>
-            <li>
-              About
-            </li>
-          </ul>
-        </nav>
-      </header>
-      <!-- This is the Filter Box Markup -->
-      <div id='filterBox'>
-        <h3>Departments</h3
-        <div id='genderFilter'>
-          <span class='filterTitle'>Gender</span>
-          <ul>
-            <li class='checkbox'><input type='radio' name='gender'>Female</li>
-            <li class='checkbox'><input type='radio' name='gender'>Male</li>
-          </ul>
-        </div>
-        <div id='catFilter'>
-          <span class='filterTitle'>Category</span>
-          <ul id='catList'></ul>
-        </div>
-        <div id='sizeFilter'>
-          <span class='filterTitle'>Sizes</span>
-          <ul id='sizeList'></ul>
-        </div>
-        <div id='colorFilter'>
-          <span class='filterTitle'>Colors</span>
-          <ul id='colorList'></ul>
-        </div>
-      </div>
-      <!--
-        This is the Main container mockup
-        It should change size, depnding on whether or not filterbar is present
-      -->
-    <div id='mainContainer'>
 
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Low Poly Store</title>
+  <link rel="stylesheet" href="./css/styles.css">
+  <script src="./js/web2.js"></script>
+</head>
+<body>
+  <!-- HEADER START -->
+   <header>
+                <h1>Low Poly</h1>
+            <nav>
+            <ul>
+                <li>
+                    <a href=#>Home</a>
+                </li>
+                <li>
+                    <a href=#>Browse</a>
+                </li>
+                <li>
+                    <a href=# >About</a>
+                </li>
+            </ul>
+            </nav>
+            </header>
+    <!-- HEADER END  -->
+  <div class="mainContainer">
+    <!-- LEFT BAR BEGINS -->
+    <aside class="leftBar"> 
+      <h3>Departments</h3>
+      <button class="clearBtn">Clear Filters</button>
+      <div class="filter gender">
+        <div class="title">Gender</div>
+        <ul>
+          <li class="checkbox"><input type="checkbox" name="gender" value="female">Female</li>
+          <li class="checkbox"><input type="checkbox" name="gender" value="male">Male</li>
+        </ul>
+      </div>
+
+      <div class="filter category">
+        <div class="title">Category</div>
+        <ul>
+          <li class="checkbox"><input type="checkbox">Bottoms</li>
+          <li class="checkbox"><input type="checkbox">Dresses</li>
+          <li class="checkbox"><input type="checkbox">Outwear</li>
+          <li class="checkbox"><input type="checkbox">Tops</li>
+        </ul>
+      </div>
+
+      <div class="filter size">
+        <div class="title">Size</div>
+        <ul>
+          <li class="checkbox"><input type="checkbox" >Small</li>
+          <li class="checkbox"><input type="checkbox" >Medium</li>
+          <li class="checkbox"><input type="checkbox">Large</li>
+        </ul>
+      </div>
+
+      <div class="filter color">
+        <div class="title">Colors</div>
+        <ul>
+          <li class="checkbox"><span class="color-swatch" style="background:#f5e6c8"></span> Beige</li>
+          <li class="checkbox"><span class="color-swatch" style="background:#000"></span> Black</li>
+          <li class="checkbox"><span class="color-swatch" style="background:#2b3b4d"></span> Blue</li>
+        </ul>
+      </div>
+      
+    </aside>
+    <!-- LEFTBAR ENDS -->
+    <main class="contentBox">
+      <!-- BROWSE BOX  -->
+      <article class="contentBox" id="browseBox">
+        <div class="header">
+          <h1>Browse</h1>
+          <div class="sort"><label>Sort</label>
+            <select label="Sort products">
+              <option>Product Name (A-Z)</option>
+              <option>Price: Low to High</option>
+              <option>Price: High to Low</option>
+              <option>Category</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid" id="productGrid">
+          <!-- PRODUCT TEMPLATE  -->
+          <template id="productTemplate">
+            <div class="box">
+              <div class="thumbnail"><img src="/mnt/data/e931c1a1-7553-49b7-814f-7dfdb85f3aa4.png" alt="placeholder image"></div>
+              <div class="info">
+                <div>
+                  <div class="title">Title</div>
+                  <div class="price">$price</div>
+                </div>
+                <div class="add">+</div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </article>
+      <!-- BROWSE BOX END -->
+       <!-- SINGLE ITEM BOX -->
+  <article class="contentBox" id="singleItem">
+
+    <div id="singleImage"></div>
+
+    <div class="details">
+
+    <ul id="breadCrumb">
+      <li>Home</li>
+      <li>Gender</li>
+      <li>Category</li>
+      <li>Item</li>
+     </ul>
+     <span class="title" id="itemName">Item Name</span>
+     <span class="price" id="itemPrice">$99.99</span>
+     <span id="itemDesc">Item Description Lorem Ipsum etc</span>
+     <span id="itemMat">Material: Cotton</span>
+     <label>
+       Quantity:
+       <input type="number" id="itemQuant" min="1" value="1">
+     </label>
+     <span class="title">Available Sizes:</span>
+     <label><input type="checkbox"> XS</label>
+     <label><input type="checkbox"> M</label>
+      <span class="title">Color Options:</span>
+      <span class="colorOption" style="background:#2b3b4d;"></span>
+      <span class="colorOption" style="background:#f5d100;"></span>
+      <button id="addToCart">+ Add to Cart</button>
     </div>
-  </main>
+  </article>
+      <!-- SINGLE ITEM BOX END  -->
+    </main>
+  </div>
+  <div id="footer">Comp 3512 Web - II - Assignment 2</div>
+
+
+</body>
 </html>

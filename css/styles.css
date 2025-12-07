@@ -54,7 +54,8 @@ nav a:hover {
       max-width:1100px;
       margin:24px auto;
       display:grid;
-      grid-template-columns:260px 1fr;
+      /* grid-template-columns:260px 1fr; */
+      
       gap:18px
     
     }
@@ -66,6 +67,15 @@ nav a:hover {
     padding: 15px;
     font-size: 0.9rem;
 }
+    /* HOME THINGS */
+    #heroImage {
+      width: 100%;
+      height: 400px;
+      background-size:cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      margin-bottom: 20px; /*ish?*/
+    }
     /* LEFTBAR */
 
     .leftBar{
@@ -204,12 +214,18 @@ nav a:hover {
 
     /* SINGLE ITEM STUFF */
     #singleItem {
+      
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 35px;
       padding: 35px;
-      max-width:100%;
-      margin:auto;
+      max-width:100;
+      margin:0 auto;
+    }
+    #singleImage img{
+      width: 100%;
+      height:100%;
+      object-fit:contain;
     }
     #breadCrumb {
       list-style: none;

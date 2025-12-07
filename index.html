@@ -11,8 +11,8 @@
 <body>
    <!-- PRODUCT TEMPLATE  -->
           <template id="productTemplate">
-            <div class="box">
-              <div class="thumbnail"><img src="/mnt/data/e931c1a1-7553-49b7-814f-7dfdb85f3aa4.png" alt="placeholder image"></div>
+            <div class="box" data-product="">
+              <div class="thumbnail"><img src="./data/shirt.png" alt="placeholder image"></div>
               <div class="info">
                 <div>
                   <div class="title">Title</div>
@@ -55,36 +55,38 @@
 
       <div class="filter category">
         <div class="title">Category</div>
-        <ul>
-          <li class="checkbox"><input type="checkbox" value="bottoms">Bottoms</li>
+        <ul id="categoryList">
+     <!-- <li class="checkbox"><input type="checkbox" value="bottoms">Bottoms</li>
           <li class="checkbox"><input type="checkbox" value="dresses">Dresses</li>
           <li class="checkbox"><input type="checkbox" value="outerwear">Outwear</li>
-          <li class="checkbox"><input type="checkbox" value="tops">Tops</li>
+          <li class="checkbox"><input type="checkbox" value="tops">Tops</li> -->
         </ul>
       </div>
 
       <div class="filter size">
         <div class="title">Size</div>
-        <ul>
-          <li class="checkbox"><input type="checkbox" value="small">Small</li>
-          <li class="checkbox"><input type="checkbox" value="medium">Medium</li>
-          <li class="checkbox"><input type="checkbox" value="large">Large</li>
+        <ul id="sizeList">
+          <!-- <li class="checkbox"><input type="checkbox" value="XS">Extra-Small</li>
+          <li class="checkbox"><input type="checkbox" value="S">Small</li>
+          <li class="checkbox"><input type="checkbox" value="M">Medium</li>
+          <li class="checkbox"><input type="checkbox" value="L">Large</li>
+          <li class="checkbox"><input type="checkbox" value="XL">Extra-Large</li> -->
         </ul>
       </div>
 
       <div class="filter color">
         <div class="title">Colors</div>
-        <ul>
-          <li class="checkbox"><input type="checkbox" value="blue"><span class="color-swatch" style="background:#041ae2"></span> blue</li>
+        <ul id="colorList">
+          <!-- <li class="checkbox"><input type="checkbox" value="blue"><span class="color-swatch" style="background:#041ae2"></span> blue</li>
           <li class="checkbox"><input type="checkbox" value="green"><span class="color-swatch" style="background:#0ad135"></span> green</li>
-          <li class="checkbox"><input type="checkbox" value="white"><span class="color-swatch" style="background:#ffffff"></span> white</li>
+          <li class="checkbox"><input type="checkbox" value="white"><span class="color-swatch" style="background:#ffffff"></span> white</li> -->
         </ul>
       </div>
       
     </aside>
-    <!-- LEFTBAR ENDS -->
+<!-- LEFTBAR ENDS -->
     <main class="contentBox">
-      <!-- BROWSE BOX  -->
+<!-- BROWSE BOX  -->
       <article class="contentBox" id="browseBox">
         <div class="header">
           <h1>Browse</h1>
@@ -101,11 +103,13 @@
          
         </div>
       </article>
-      <!-- BROWSE BOX END -->
-       <!-- SINGLE ITEM BOX -->
+ <!-- BROWSE BOX END -->
+<!-- SINGLE ITEM BOX -->
   <article class="contentBox" id="singleItem">
 
-    <div id="singleImage"></div>
+    <div id="singleImage">
+      <img id="singleImageImg" src="" alt="">
+    </div>
 
     <div class="details">
 
@@ -115,10 +119,10 @@
       <li>Category</li>
       <li>Item</li>
      </ul>
-     <span class="title" id="itemName">Item Name</span>
-     <span class="price" id="itemPrice">$99.99</span>
-     <span id="itemDesc">Item Description Lorem Ipsum etc</span>
-     <span id="itemMat">Material: Cotton</span>
+     <span class="title" id="itemName"></span>
+     <span class="price" id="itemPrice">$</span>
+     <span id="itemDesc"></span>
+     <span id="itemMat"></span>
      <label>
        Quantity:
        <input type="number" id="itemQuant" min="1" value="1">
@@ -132,7 +136,14 @@
       <button id="addToCart">+ Add to Cart</button>
     </div>
   </article>
-      <!-- SINGLE ITEM BOX END  -->
+<!-- SINGLE ITEM BOX END  -->
+<!-- HOME PAGE STARTS -->
+  <article class="contentBox" id="homeBox">
+    <div id="heroImage"></div>
+    <div class="grid" id="homeGrid"></div>
+  </article>
+<!-- HOME PAGE END  -->
+
     </main>
   </div>
   <div id="footer">Comp 3512 Web - II - Assignment 2</div>

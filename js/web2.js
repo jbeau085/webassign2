@@ -7,6 +7,8 @@ let filterList = {
     size: [],
     colors: []
 };
+  let filteredProducts = [];
+
 
 // Get data from localStorage, if it doesn't exist, fetch it!
 function fetchData(callback) {
@@ -24,22 +26,25 @@ function fetchData(callback) {
       })
       .catch(err => console.log("Fetch Failed", err));
   }
-}
+};
 
 // Generate the browse grid
 function generateGrid(products) {
-  const filteredProducts = buildFilteredList(products, filterList);
   const template = document.querySelector("#productTemplate");
   const grid = document.querySelector("#productGrid");
   grid.replaceChildren();
 
-  filteredProducts.forEach(p => {
+  products.forEach(p => {
     const newGrid = template.content.cloneNode(true);
+    const box = newGrid.querySelector(".box");
+    box.dataset.product = p.id;
     newGrid.querySelector(".title").textContent = p.name;
     newGrid.querySelector(".price").textContent = "$" + p.price;
+    newGrid.querySelector(".title").addEventListener("click", ()=>showSingleItem(p.id));
+    newGrid.querySelector(".thumbnail").addEventListener("click", () => showSingleItem(p.id));
     grid.appendChild(newGrid);
   });
-}
+};
 
 // build the filtered list of products
 function buildFilteredList(products, filterList) {
@@ -62,9 +67,11 @@ function buildFilteredList(products, filterList) {
     }
     return true;
   });
-}
+};
 
 // When you click on a filter, alter the filter array
+// basically the same as https://www.geeksforgeeks.org/javascript/how-to-filter-an-array-of-objects-based-on-multiple-properties-in-javascript/
+
 function filterMaker(e) {
   const pickGender = [...document.querySelectorAll(".filter.gender input[type='checkbox']:checked")];
   filterList.gender = pickGender.map(cb => cb.value.toLowerCase());
@@ -77,15 +84,125 @@ function filterMaker(e) {
 
   const pickColor = [...document.querySelectorAll(".filter.color input[type='checkbox']:checked")];
   filterList.colors = pickColor.map(cb => cb.value.toLowerCase());
+filteredProducts = buildFilteredList(products, filterList);
+  generateGrid(filteredProducts);
+}
+// let's auto generate some product filters! Yay!
+// probably just categories, sizes, and colors
+// later I'll make it update when other filters are clicked...?
+// yeah right
+function generateFilters(products){
+  const categoryList = document.querySelector("#categoryList");
+  const sizeList = document.querySelector("#sizeList");
+  const colorList = document.querySelector("#colorList");
+  categoryList.replaceChildren();
+  const catList = [];
+  const sList =[];
+  const cList=[];
+  products.forEach(p=>{
+    // THERE HAS TO BE A BETTER WAY OF DOING THIS DON'T LEAVE THIS AND DON'T LET VS REFACTOR YOUR CODE AGAIN DUMMY
+    if (!catList.includes(p.category)) {
+      catList.push(p.category);
+      const li = document.createElement("li");
+      const checkBox = document.createElement("input");
+      checkBox.type = "checkbox";
+      checkBox.value=p.category.toLowerCase();
+      li.className="checkbox";
+      li.textContent=p.category;
+      li.appendChild(checkBox);
+      categoryList.appendChild(li);
+    }
+    // generate sizes
+    p.sizes.forEach(s=>{
+      if (!sList.includes(s)){
+        sList.push(s);
+        const li = document.createElement("li");
+        const checkBox = document.createElement("input");
+        checkBox.type = "checkbox";
+        checkBox.value = s;
+        li.className="checkbox";
+        li.textContent=s;
+        li.appendChild(checkBox);
+        sizeList.appendChild(li);
+      }
+      });
 
-  generateGrid(products);
+    // generate colors
+
+    p.color.forEach(c => {
+
+      if (!cList.includes(c.name)) {
+        cList.push(c.name);
+        const li = document.createElement("li");
+        const checkBox = document.createElement("input");
+        checkBox.type = "checkbox";
+        checkBox.value = c.name;
+        li.className = "checkbox";
+        const swatch = document.createElement("span");
+        swatch.className = "color-swatch";
+        swatch.style.background = c.hex;
+        li.appendChild(checkBox);
+        li.appendChild(swatch);
+        li.appendChild(document.createTextNode(" " + c.name));
+        colorList.appendChild(li);
+      }
+    });
+    }// end product loop
+  )};
+// view switcheroo
+function switchieBoi(viewBox){
+  const mainContainer = document.querySelector(".mainContainer");
+  const leftBar = document.querySelector(".leftBar");
+  const browseBox = document.querySelector("#browseBox");
+  const homeBox = document.querySelector("#homeBox");
+  const singleItem = document.querySelector("#singleItem");
+  leftBar.style.display = "none";
+  browseBox.style.display = "none";
+  homeBox.style.display="none";
+  singleItem.style.display="none";
+  mainContainer.style.gridTemplateColumns = "1fr";
+
+  if (viewBox === "home"){
+    homeBox.style.display = "block";
+  }else if (viewBox === "browse"){
+    browseBox.style.display="block";
+    leftBar.style.display = "block";
+    mainContainer.style.gridTemplateColumns = "260px 1fr";
+  } else if (viewBox === "singleItem"){
+    singleItem.style.display = "block";
+  } else if (viewBox === "single"){
+    singleItem.style.display = "block";
+  }
+  // }else if (viewBox === "about"){
+  //   homeBox.style.display="block";
+  //   // Later do the thing
+  // }
+}
+function showSingleItem(productid){
+  const product = products.find(p=>p.id === productid);
+  if (!product) switchieBoi("home");
+  switchieBoi("single");
+  document.querySelector("#itemName").textContent = product.name;
+  document.querySelector("#itemPrice").textContent = product.price;
+  document.querySelector("#itemDesc").textContent = product.description;
+  document.querySelector("#itemMat").textContent = product.material;
+  document.querySelector("#singleImageImg").src="./data/shirt.png";
+
 }
 
 // LOAD THE DOM CONTENT HERE
 document.addEventListener("DOMContentLoaded", function() {
   fetchData(() => {
-    generateGrid(products); // draw initial grid
+    filteredProducts = buildFilteredList(products, filterList);
+    generateGrid(filteredProducts); 
     const leftBar = document.querySelector(".leftBar");
     leftBar.addEventListener("change", filterMaker);
+    generateFilters(filteredProducts);
   });
+  // Activate switchieboi
+  document.querySelector("nav").addEventListener("click", e=>{
+    if (e.target.tagName !== "A") return;
+    const viewBox = e.target.textContent.trim().toLowerCase();
+    switchieBoi(viewBox);
+  })
 });

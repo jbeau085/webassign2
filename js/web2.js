@@ -1,6 +1,8 @@
 const dataUrl = "https://gist.githubusercontent.com/rconnolly/d37a491b50203d66d043c26f33dbd798/raw/37b5b68c527ddbe824eaed12073d266d5455432a/clothing-compact.json";
 let products = [];
-let cart = [];
+let cartContent = [];
+let cartCount = 0;
+let cartTotal = 0;
 let filterList = {
     gender: [],
     categories: [],
@@ -37,7 +39,12 @@ function generateGrid(products) {
   products.forEach(p => {
     const newGrid = template.content.cloneNode(true);
     const box = newGrid.querySelector(".box");
-    box.dataset.product = p.id;
+    const button = newGrid.querySelector(".add");
+    button.dataset.id = p.id;
+    button.addEventListener("click", () => {
+      const cartItem = makeCartItem(button);
+      cartAdd(cartItem);
+    })
     newGrid.querySelector(".title").textContent = p.name;
     newGrid.querySelector(".price").textContent = "$" + p.price;
     newGrid.querySelector(".title").addEventListener("click", ()=>showSingleItem(p.id));
@@ -149,7 +156,7 @@ function generateFilters(products){
     });
     }// end product loop
   )};
-// view switcheroo
+// view switchieBoi will change the boxes that appear.
 function switchieBoi(viewBox){
   const mainContainer = document.querySelector(".mainContainer");
   const leftBar = document.querySelector(".leftBar");
@@ -161,7 +168,6 @@ function switchieBoi(viewBox){
   homeBox.style.display="none";
   singleItem.style.display="none";
   mainContainer.style.gridTemplateColumns = "1fr";
-
   if (viewBox === "home"){
     homeBox.style.display = "block";
   }else if (viewBox === "browse"){
@@ -182,6 +188,12 @@ function showSingleItem(productid){
   const product = products.find(p=>p.id === productid);
   if (!product) switchieBoi("home");
   switchieBoi("single");
+  const button = document.querySelector("#addToCart");
+  button.dataset.id=productid;
+  button.addEventListener("click", () => {
+      const cartItem = makeCartItem(button);
+      cartAdd(cartItem);
+    });
   document.querySelector("#itemName").textContent = product.name;
   document.querySelector("#itemPrice").textContent = product.price;
   document.querySelector("#itemDesc").textContent = product.description;
@@ -189,6 +201,71 @@ function showSingleItem(productid){
   document.querySelector("#singleImageImg").src="./data/shirt.png";
 
 }
+// Lets make a grid under home, and make home generate with an image!
+// GeeksforGeeks coming in CLUTCH for this project
+// https://www.geeksforgeeks.org/javascript/how-to-select-a-random-element-from-array-in-javascript
+
+function makeHome(products){
+  const homeGrid = document.querySelector("#homeGrid");
+  const randomProducts = [...products].sort(()=> 0.5 - Math.random());
+  const theThree = randomProducts.slice(0,3);
+  const template = document.querySelector("#productTemplate");
+  homeGrid.replaceChildren();
+  // reusing this is silly, make sure you change this to a function, then you can call it for relevent items etc.
+  theThree.forEach( g => {
+    const newGrid = template.content.cloneNode(true);
+    const box = newGrid.querySelector(".box");
+    box.dataset.product = g.id;
+    const button = newGrid.querySelector(".add");
+    button.dataset.id = g.id;
+    button.addEventListener("click", () => {
+      const cartItem = makeCartItem(button);
+      cartAdd(cartItem);
+    })
+    newGrid.querySelector(".title").textContent = g.name;
+    newGrid.querySelector(".price").textContent = "$" + g.price;
+    newGrid.querySelector(".title").addEventListener("click", ()=>showSingleItem(g.id));
+    newGrid.querySelector(".thumbnail").addEventListener("click", () => showSingleItem(g.id));
+    homeGrid.appendChild(newGrid);
+  })
+}
+// Add to cart functionality! we're makin' buttons, folks!
+function makeCartItem(btn){
+  let item = {};
+  const product = products.find(p=>p.id === btn.dataset.id);
+  item.id = product.id;
+  item.price = product.price;
+  item.size = product.pickSize || "";
+  item.color = product.pickColor || "";
+  item.name = product.name;
+  item.quantity = 1;
+  item.total = item.price * item.quantity;
+  return item;
+}
+// count items and update cart count
+function cartAdd(item){
+  let entry = null;
+  for (let cartItem of cartContent){
+    if (cartItem.id == item.id) {
+      entry = cartItem;
+      entry.quantity++;
+      cartCount++;
+      cartTotal += item.price;
+      break;
+    }
+  }
+  if (!entry) {
+    item.quantity = 1;
+    cartContent.push(item);
+    cartCount++;
+    cartTotal+=item.price;
+  }
+  console.dir(cartContent);
+  const totalQuantity = cartContent.reduce((sum, item) => sum + item.quantity, 0);
+  document.querySelector("#cartCount").textContent = totalQuantity;
+  // updateCart();
+}
+
 
 // LOAD THE DOM CONTENT HERE
 document.addEventListener("DOMContentLoaded", function() {
@@ -198,7 +275,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const leftBar = document.querySelector(".leftBar");
     leftBar.addEventListener("change", filterMaker);
     generateFilters(filteredProducts);
+    document.querySelector("#heroImage").style.backgroundImage = 'url("/data/hero.png")';
+    makeHome(products);
+    switchieBoi("home");
   });
+
   // Activate switchieboi
   document.querySelector("nav").addEventListener("click", e=>{
     if (e.target.tagName !== "A") return;

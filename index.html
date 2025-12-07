@@ -11,33 +11,36 @@
 <body>
    <!-- PRODUCT TEMPLATE  -->
           <template id="productTemplate">
-            <div class="box" data-product="">
+            <div class="box" >
               <div class="thumbnail"><img src="./data/shirt.png" alt="placeholder image"></div>
               <div class="info">
                 <div>
                   <div class="title">Title</div>
                   <div class="price">$price</div>
                 </div>
-                <div class="add">+</div>
+                <div class="add" data-product="">+</div>
               </div>
             </div>
           </template>
   <!-- HEADER START -->
    <header>
                 <h1>Low Poly</h1>
-            <nav>
-            <ul>
-                <li>
-                    <a href=#>Home</a>
-                </li>
-                <li>
-                    <a href=#>Browse</a>
-                </li>
-                <li>
-                    <a href=# >About</a>
-                </li>
-            </ul>
-            </nav>
+                <nav>
+                  <ul>
+                    <li>
+                      <a href=#>Home</a>
+                    </li>
+                    <li>
+                      <a href=#>Browse</a>
+                    </li>
+                    <li>
+                      <a href=# >About</a>
+                    </li>
+                  </ul>
+                </nav>
+                <div id="cart">
+                  <span>Cart:</span> <span id="cartCount">0</span>
+                </div>
             </header>
     <!-- HEADER END  -->
   <div class="mainContainer">

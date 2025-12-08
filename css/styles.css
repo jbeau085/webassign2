@@ -295,6 +295,60 @@ nav a:hover {
       display:inline-block;
       border: 5px solid;
     }
+    /* SHIIPPING CART THINGS */
+    #cartBox{
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap:30px;
+      padding:20px;
+    }
+    #cartScroller {
+      max-height:250px;
+      overflow-y:auto;
+      border: 1px solid;
+      margin-top:10px;
+    }
+    #cartTable{
+      width:100%;
+      margin-top: 10px;
+      border-collapse:collapse;
+    }
+    #cartTable th {
+      text-align:center;
+      padding:10px;
+      border-bottom:1px solid;
+      font-weight:bold;
+    }
+    #cartTable td{
+      vertical-align:middle;
+      border-bottom: 1px solid;
+    }
+    #cartTable td:last-child {
+      text-align:right;
+    }
+    #shipping, #summary{
+      border: 1px solid;
+      padding: 10px;
+    }
+    #shipping h2{
+      font-size: 16px;
+    }
+    #summary h2 {
+      font-size: 16px;
+    }
+    #summary span {
+      display:flex;
+      justify-content: space-between;
+      margin:8px 0;
+      font-weight:bold;
+    }
+    #cartBottom{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:30px;
+    }
+
+
     /* MEDIA THINGS */
     @media (max-width:900px){.mainContainer{
       grid-template-columns:200px 1fr;

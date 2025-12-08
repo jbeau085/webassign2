@@ -163,10 +163,12 @@ function switchieBoi(viewBox){
   const browseBox = document.querySelector("#browseBox");
   const homeBox = document.querySelector("#homeBox");
   const singleItem = document.querySelector("#singleItem");
+  const cartBox = document.querySelector("#cartBox");
   leftBar.style.display = "none";
   browseBox.style.display = "none";
   homeBox.style.display="none";
   singleItem.style.display="none";
+  cartBox.style.display = "none";
   mainContainer.style.gridTemplateColumns = "1fr";
   if (viewBox === "home"){
     homeBox.style.display = "block";
@@ -178,6 +180,8 @@ function switchieBoi(viewBox){
     singleItem.style.display = "block";
   } else if (viewBox === "single"){
     singleItem.style.display = "block";
+  }else if (viewBox === "cart:"){
+    cartBox.style.display="block";
   }
   // }else if (viewBox === "about"){
   //   homeBox.style.display="block";
@@ -281,7 +285,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   // Activate switchieboi
-  document.querySelector("nav").addEventListener("click", e=>{
+  document.querySelector("header").addEventListener("click", e=>{
     if (e.target.tagName !== "A") return;
     const viewBox = e.target.textContent.trim().toLowerCase();
     switchieBoi(viewBox);

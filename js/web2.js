@@ -279,7 +279,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const leftBar = document.querySelector(".leftBar");
     leftBar.addEventListener("change", filterMaker);
     generateFilters(filteredProducts);
-    document.querySelector("#heroImage").style.backgroundImage = 'url("/data/hero.png")';
+    document.querySelector("#heroImage").style.backgroundImage = 'url("./data/hero.png")';
     makeHome(products);
     switchieBoi("home");
   });

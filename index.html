@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Low Poly Store</title>
+  <link rel="stylesheet" href="./css/borders.css">
   <link rel="stylesheet" href="./css/styles.css">
   <script src="./js/web2.js"></script>
 </head>
@@ -22,7 +23,7 @@
             </div>
           </template>
 <!-- HEADER START -->
-   <header>
+   <header class="pixel-corners--wrapper">
                 <h1>Low Poly</h1>
                 <nav>
                   <ul>
@@ -38,13 +39,13 @@
                   </ul>
                 </nav>
                 <div id="cart">
-                  <span><a>Cart:</span> <span id="cartCount">0</span></a>
+                  <span><a>Cart:</span></a> <span id="cartCount">0</span>
                 </div>
             </header>
 <!-- HEADER END  -->
-  <div class="mainContainer">
+  <div class="mainContainer pixel-corners--wrapper">
 <!-- LEFT BAR BEGINS -->
-    <aside class="leftBar"> 
+    <aside class="leftBar pixel-corners"> 
       <h3>Departments</h3>
       <button class="clearBtn">Clear Filters</button>
       <div class="filter gender">
@@ -57,39 +58,44 @@
 
       <div class="filter category">
         <div class="title">Category</div>
-        <ul id="categoryList">
+        <select id="categoryList">
+        </select>
+        <!-- <ul id="categoryList"> -->
      <!-- <li class="checkbox"><input type="checkbox" value="bottoms">Bottoms</li>
           <li class="checkbox"><input type="checkbox" value="dresses">Dresses</li>
           <li class="checkbox"><input type="checkbox" value="outerwear">Outwear</li>
           <li class="checkbox"><input type="checkbox" value="tops">Tops</li> -->
-        </ul>
+        <!-- </ul> -->
+
       </div>
 
       <div class="filter size">
         <div class="title">Size</div>
-        <ul id="sizeList">
+        <!-- <ul id="sizeList"> -->
           <!-- <li class="checkbox"><input type="checkbox" value="XS">Extra-Small</li>
           <li class="checkbox"><input type="checkbox" value="S">Small</li>
           <li class="checkbox"><input type="checkbox" value="M">Medium</li>
           <li class="checkbox"><input type="checkbox" value="L">Large</li>
           <li class="checkbox"><input type="checkbox" value="XL">Extra-Large</li> -->
-        </ul>
+        <!-- </ul> -->
+         <select id="sizeList"></select>
       </div>
 
       <div class="filter color">
         <div class="title">Colors</div>
-        <ul id="colorList">
+        <!-- <ul id="colorList"> -->
           <!-- <li class="checkbox"><input type="checkbox" value="blue"><span class="color-swatch" style="background:#041ae2"></span> blue</li>
           <li class="checkbox"><input type="checkbox" value="green"><span class="color-swatch" style="background:#0ad135"></span> green</li>
           <li class="checkbox"><input type="checkbox" value="white"><span class="color-swatch" style="background:#ffffff"></span> white</li> -->
-        </ul>
+        <!-- </ul> -->
+         <select id="colorList"></select>
       </div>
       
     </aside>
 <!-- LEFTBAR ENDS -->
-    <main class="contentBox">
+    <main class="contentBox pixel-corners">
 <!-- BROWSE BOX  -->
-      <article class="contentBox" id="browseBox">
+      <article class="contentBox pixel-corners" id="browseBox">
         <div class="header">
           <h1>Browse</h1>
           <div class="sort"><label>Sort</label>
@@ -140,10 +146,13 @@
   </article>
 <!-- SINGLE ITEM BOX END  -->
 <!-- HOME PAGE STARTS -->
-  <article class="contentBox" id="homeBox">
-    <div id="heroImage"></div>
-    <div class="grid" id="homeGrid"></div>
-  </article>
+ <!-- <div class="pixel-corners--wrapper"> -->
+
+   <article class="contentBox pixel-corners" id="homeBox">
+     <div id="heroImage"></div>
+     <div class="grid" id="homeGrid"></div>
+    </article>
+  <!-- </div> -->
 <!-- HOME PAGE END  -->
 <!-- SHOPPING CART START -->
   <article class="contentBox" id="cartBox">
@@ -164,13 +173,14 @@
             </tr>
           </thead>
           <tbody id="cartList">
-            
+
           </tbody>
+
         </table>
         </div>
       </div>
       <div id="cartBottom">
-      <div id="shipping">
+      <div class="pixel-corners" id="shipping">
         <h2>Shipping Options</h2>
         <label for="shippingOptions">Options:</label>
         <select id="shippingOptions">
@@ -178,8 +188,15 @@
           <option value="express">Express</option>
           <option value="priority">Priority</option>
         </select>
+        <br>
+        <label for="destOptions">Destination:</label>
+        <select id="destOptions">
+          <option value="canada">Canada</option>
+          <option value="usa">United States</option>
+          <option value="inter">International</option>
+        </select>
       </div>
-      <div id="summary">
+      <div class="pixel-corners" id="summary">
         <h2>Your order:</h2>
         
         <span>Merchandise: <span id="merch">0</span></span>
@@ -194,13 +211,20 @@
 
     </main>
   </div>
-  <div id="footer">
+  <div class="pixel-corners--wrapper" id="footer">
     <p>Comp 3512 Web - II - Assignment 2</p>
     <a href="https://github.com/jbeau085/webassign2">GitHub</a>
 
 
   </div>
-
-
+  <div id="snackBar"></div>
+  <div id="aboutModal">
+    <div class="modal">
+      <span id="closeBtn"><a>X</a></span>
+      <p>I have technically added an about dialog</p>
+      <p>While I respect that this should have more information, the fact is that I set my oven on fire</p>
+      <p>James should have prepared better.</p>
+    </div>
+  </div>
 </body>
 </html>

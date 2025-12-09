@@ -46,14 +46,92 @@ function generateGrid(products) {
       cartAdd(cartItem);
     })
     newGrid.querySelector(".title").textContent = p.name;
-    newGrid.querySelector(".price").textContent = "$" + p.price;
+    newGrid.querySelector(".price").textContent = "$" + p.price.toFixed(2);
     newGrid.querySelector(".title").addEventListener("click", ()=>showSingleItem(p.id));
     newGrid.querySelector(".thumbnail").addEventListener("click", () => showSingleItem(p.id));
     grid.appendChild(newGrid);
   });
 };
+// generate filters in the worst possible way.
+function generateFilters(products){
+  const categoryList = document.querySelector("#categoryList");
+  const sizeList = document.querySelector("#sizeList");
+  const colorList = document.querySelector("#colorList");
+  categoryList.replaceChildren();
+  sizeList.replaceChildren();
+  colorList.replaceChildren();
 
-// build the filtered list of products
+  const firstCategory = document.createElement("option");
+  firstCategory.value="everything";
+  firstCategory.textContent="Everything";
+  categoryList.appendChild(firstCategory);
+
+  const firstSize = document.createElement("option");
+  firstSize.value="everything";
+  firstSize.textContent="Everything";
+  sizeList.appendChild(firstSize);
+
+  const firstColor = document.createElement("option");
+  firstColor.value="everything";
+  firstColor.textContent="Everything";
+  colorList.appendChild(firstColor);
+
+  const catList = [];
+  const sList = [];
+  const cList = [];
+
+  products.forEach(p=>{
+    if (!catList.includes(p.category)){
+      catList.push(p.category);
+      const option = document.createElement("option");
+      option.value = p.category.toLowerCase();
+      option.textContent = p.category;
+      categoryList.append(option);
+    }
+
+    p.sizes.forEach(s=>{
+      if (!sList.includes(s)){
+        sList.push(s);
+        const option = document.createElement("option");
+        option.value = s.toUpperCase();
+        option.textContent = s;
+        sizeList.appendChild(option);
+      }
+    });
+
+    p.color.forEach(c=>{
+      if (!cList.includes(c.name)){
+        cList.push(c.name);
+        const option = document.createElement("option");
+        option.value = c.name.toLowerCase();
+        option.textContent = c.name;
+        colorList.appendChild(option);
+      }
+    });
+  });
+
+}
+// filtermaker gets event information from leftBar and applies the filters
+function filterMaker(e) {
+  const pickGender = [...document.querySelectorAll(".filter.gender input[type='checkbox']:checked")];
+  filterList.gender = pickGender.map(cb => cb.value.toLowerCase());
+
+  const pickCategory = document.querySelector("#categoryList");
+  const pickedCategory = pickCategory.value;
+  filterList.categories = pickedCategory === "everything" ? [] : [pickedCategory.toLowerCase()];
+
+  const pickSize = document.querySelector("#sizeList");
+  const pickedSize = pickSize.value;
+  filterList.size = pickedSize === "everything" ? [] : [pickedSize.toUpperCase()];
+
+  const pickColor = document.querySelector("#colorList");
+  const pickedColor = pickColor.value;
+  filterList.colors = pickedColor === "everything" ? [] : [pickedColor.toLowerCase()];
+
+  filteredProducts = buildFilteredList(products, filterList);
+  generateGrid(filteredProducts);
+}
+// Function to build the filtered list of products
 function buildFilteredList(products, filterList) {
   return products.filter(product => {
     if (filterList.gender.length > 0 &&
@@ -65,7 +143,7 @@ function buildFilteredList(products, filterList) {
       return false;
     }
     if (filterList.size.length > 0 &&
-        !product.sizes.some(s => filterList.size.includes(s))) {
+        !product.sizes.some(s => filterList.size.includes(s.toUpperCase()))) {
       return false;
     }
     if (filterList.colors.length > 0 &&
@@ -74,88 +152,17 @@ function buildFilteredList(products, filterList) {
     }
     return true;
   });
-};
-
-// When you click on a filter, alter the filter array
-// basically the same as https://www.geeksforgeeks.org/javascript/how-to-filter-an-array-of-objects-based-on-multiple-properties-in-javascript/
-
-function filterMaker(e) {
-  const pickGender = [...document.querySelectorAll(".filter.gender input[type='checkbox']:checked")];
-  filterList.gender = pickGender.map(cb => cb.value.toLowerCase());
-
-  const pickCategory = [...document.querySelectorAll(".filter.category input[type='checkbox']:checked")];
-  filterList.categories = pickCategory.map(cb => cb.value.toLowerCase());
-
-  const pickSize = [...document.querySelectorAll(".filter.size input[type='checkbox']:checked")];
-  filterList.size = pickSize.map(cb => cb.value);
-
-  const pickColor = [...document.querySelectorAll(".filter.color input[type='checkbox']:checked")];
-  filterList.colors = pickColor.map(cb => cb.value.toLowerCase());
-filteredProducts = buildFilteredList(products, filterList);
-  generateGrid(filteredProducts);
 }
-// let's auto generate some product filters! Yay!
-// probably just categories, sizes, and colors
-// later I'll make it update when other filters are clicked...?
-// yeah right
-function generateFilters(products){
-  const categoryList = document.querySelector("#categoryList");
-  const sizeList = document.querySelector("#sizeList");
-  const colorList = document.querySelector("#colorList");
-  categoryList.replaceChildren();
-  const catList = [];
-  const sList =[];
-  const cList=[];
-  products.forEach(p=>{
-    // THERE HAS TO BE A BETTER WAY OF DOING THIS DON'T LEAVE THIS AND DON'T LET VS REFACTOR YOUR CODE AGAIN DUMMY
-    if (!catList.includes(p.category)) {
-      catList.push(p.category);
-      const li = document.createElement("li");
-      const checkBox = document.createElement("input");
-      checkBox.type = "checkbox";
-      checkBox.value=p.category.toLowerCase();
-      li.className="checkbox";
-      li.textContent=p.category;
-      li.appendChild(checkBox);
-      categoryList.appendChild(li);
-    }
-    // generate sizes
-    p.sizes.forEach(s=>{
-      if (!sList.includes(s)){
-        sList.push(s);
-        const li = document.createElement("li");
-        const checkBox = document.createElement("input");
-        checkBox.type = "checkbox";
-        checkBox.value = s;
-        li.className="checkbox";
-        li.textContent=s;
-        li.appendChild(checkBox);
-        sizeList.appendChild(li);
-      }
-      });
-
-    // generate colors
-
-    p.color.forEach(c => {
-
-      if (!cList.includes(c.name)) {
-        cList.push(c.name);
-        const li = document.createElement("li");
-        const checkBox = document.createElement("input");
-        checkBox.type = "checkbox";
-        checkBox.value = c.name;
-        li.className = "checkbox";
-        const swatch = document.createElement("span");
-        swatch.className = "color-swatch";
-        swatch.style.background = c.hex;
-        li.appendChild(checkBox);
-        li.appendChild(swatch);
-        li.appendChild(document.createTextNode(" " + c.name));
-        colorList.appendChild(li);
-      }
-    });
-    }// end product loop
-  )};
+// Filter clear button
+function clearFilters(){
+  const checkboxes = document.querySelectorAll(".filter.gender input[type='checkbox']");
+  checkboxes.forEach(box => {
+    box.checked = false;
+  });
+  document.querySelector("#categoryList").value = "everything";
+  document.querySelector("#sizeList").value = "everything";
+  document.querySelector("#colorList").value = "everything";
+}
 // view switchieBoi will change the boxes that appear.
 function switchieBoi(viewBox){
   const mainContainer = document.querySelector(".mainContainer");
@@ -164,29 +171,35 @@ function switchieBoi(viewBox){
   const homeBox = document.querySelector("#homeBox");
   const singleItem = document.querySelector("#singleItem");
   const cartBox = document.querySelector("#cartBox");
-  leftBar.style.display = "none";
-  browseBox.style.display = "none";
-  homeBox.style.display="none";
-  singleItem.style.display="none";
-  cartBox.style.display = "none";
-  mainContainer.style.gridTemplateColumns = "1fr";
-  if (viewBox === "home"){
-    homeBox.style.display = "block";
-  }else if (viewBox === "browse"){
-    browseBox.style.display="block";
-    leftBar.style.display = "block";
-    mainContainer.style.gridTemplateColumns = "260px 1fr";
-  } else if (viewBox === "singleItem"){
-    singleItem.style.display = "block";
-  } else if (viewBox === "single"){
-    singleItem.style.display = "block";
-  }else if (viewBox === "cart:"){
-    cartBox.style.display="block";
+  const modal = document.querySelector("#aboutModal");
+  if (viewBox === "about"){
+    // Mostly from here and the lab https://www.w3schools.com/howto/howto_css_modals.asp
+    modal.style.display="block";
+    document.querySelector("#closeBtn").addEventListener("click", ()=>{
+      modal.style.display="none";
+    })
+  } else{
+    leftBar.style.display = "none";
+    browseBox.style.display = "none";
+    homeBox.style.display="none";
+    singleItem.style.display="none";
+    cartBox.style.display = "none";
+    mainContainer.style.gridTemplateColumns = "1fr";
+    if (viewBox === "home"){
+      homeBox.style.display = "block";
+    }else if (viewBox === "browse"){
+      browseBox.style.display="block";
+      leftBar.style.display = "block";
+      mainContainer.style.gridTemplateColumns = "260px 1fr";
+    } else if (viewBox === "singleItem"){
+      singleItem.style.display = "block";
+    } else if (viewBox === "single"){
+      singleItem.style.display = "block";
+    }else if (viewBox === "cart:"){
+      cartBox.style.display="block";
+      buildCartView();
+    }
   }
-  // }else if (viewBox === "about"){
-  //   homeBox.style.display="block";
-  //   // Later do the thing
-  // }
 }
 function showSingleItem(productid){
   const product = products.find(p=>p.id === productid);
@@ -227,7 +240,7 @@ function makeHome(products){
       cartAdd(cartItem);
     })
     newGrid.querySelector(".title").textContent = g.name;
-    newGrid.querySelector(".price").textContent = "$" + g.price;
+    newGrid.querySelector(".price").textContent = "$" + g.price.toFixed(2);
     newGrid.querySelector(".title").addEventListener("click", ()=>showSingleItem(g.id));
     newGrid.querySelector(".thumbnail").addEventListener("click", () => showSingleItem(g.id));
     homeGrid.appendChild(newGrid);
@@ -238,7 +251,7 @@ function makeCartItem(btn){
   let item = {};
   const product = products.find(p=>p.id === btn.dataset.id);
   item.id = product.id;
-  item.price = product.price;
+  item.price = Number(product.price);
   item.size = product.pickSize || "";
   item.color = product.pickColor || "";
   item.name = product.name;
@@ -253,6 +266,7 @@ function cartAdd(item){
     if (cartItem.id == item.id) {
       entry = cartItem;
       entry.quantity++;
+      entry.total = entry.price * entry.quantity;
       cartCount++;
       cartTotal += item.price;
       break;
@@ -264,12 +278,61 @@ function cartAdd(item){
     cartCount++;
     cartTotal+=item.price;
   }
-  console.dir(cartContent);
+  salesToast(entry.name);
+  // console.dir(cartContent);
+  // console.log(cartTotal);
+  // https://sebhastian.com/javascript-sum-array-objects reduce. IDK if this was covered in our notes.
   const totalQuantity = cartContent.reduce((sum, item) => sum + item.quantity, 0);
   document.querySelector("#cartCount").textContent = totalQuantity;
   // updateCart();
 }
+// Okay I have a cart view, I guess now I'll load items into the cart view thing
+function buildCartView(){
+  const cartList = document.querySelector("#cartList");
+  cartList.innerHTML="";
+  cartContent.forEach(c=>{
+    // item, color, size, quant subtotal
+    const tr = document.createElement("tr");
+    const item = document.createElement("td");
+    const color = document.createElement("td");
+    const size = document.createElement("td");
+    const quant = document.createElement("td");
+    const subtotal = document.createElement("td");
+    item.textContent = c.name;
+    console.log(c.name);
+    tr.appendChild(item);
+    color.textContent=c.color;
+    console.log(c.color);
+    tr.appendChild(color);
+    size.textContent=c.size;
+    console.log(c.size);
+    tr.appendChild(size);
+    quant.textContent=c.quantity;
+    console.log(c.quantity);
+    tr.appendChild(quant);
+    subtotal.textContent="$" + c.total.toFixed(2);
+    console.log(c.total);
+    tr.appendChild(subtotal);
+    cartList.appendChild(tr);
+  })
+  const merch = document.querySelector("#merch");
+  merch.textContent="$" + cartTotal.toFixed(2);
+}
+// haha I'm not finishing this
+function shippingHandler(){
+  const shipCost = document.querySelector("#shipCost");
 
+}
+// Make a toast apear when you buy a thing
+function salesToast(product){
+  const bar = document.querySelector("#snackBar");
+  bar.className = "show";
+  bar.textContent= product + " added to the cart!";
+  setTimeout(()=>{
+    bar.className="";
+  }, 2000);
+
+}
 
 // LOAD THE DOM CONTENT HERE
 document.addEventListener("DOMContentLoaded", function() {
@@ -278,6 +341,7 @@ document.addEventListener("DOMContentLoaded", function() {
     generateGrid(filteredProducts); 
     const leftBar = document.querySelector(".leftBar");
     leftBar.addEventListener("change", filterMaker);
+    document.querySelector(".clearBtn").addEventListener("click", clearFilters);
     generateFilters(filteredProducts);
     document.querySelector("#heroImage").style.backgroundImage = 'url("./data/hero.png")';
     makeHome(products);
